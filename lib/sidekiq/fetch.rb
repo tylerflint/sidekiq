@@ -30,6 +30,7 @@ module Sidekiq
     # forever and we can't loop forever.  Instead we reschedule
     # a new fetch if the current fetch turned up nothing.
     def fetch
+      logger "fetch"
       watchdog('Fetcher#fetch died') do
         return if Sidekiq::Fetcher.done?
 
@@ -39,9 +40,11 @@ module Sidekiq
           @down = nil
 
           if work
+            logger.debug "I have work"
             @mgr.async.assign(work)
           else
-            after(0) { fetch }
+            logger.debug "I have no work"
+            after(0) { logger.debug("after(0)"; fetch }
           end
         rescue => ex
           handle_fetch_exception(ex)
