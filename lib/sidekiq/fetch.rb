@@ -44,7 +44,7 @@ module Sidekiq
             @mgr.async.assign(work)
           else
             logger.debug "I have no work"
-            after(0) { logger.debug("after(0)"; fetch }
+            after(0) { logger.debug("after(0)"); fetch }
           end
         rescue => ex
           handle_fetch_exception(ex)
